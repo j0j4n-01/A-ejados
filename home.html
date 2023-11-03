@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://kit.fontawesome.com/9de99b2455.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Roboto:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@200;300&family=Merienda:wght@800&family=Oswald&family=Quicksand:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap');
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Variables
+            const baseDeDatos = [
+                {
+                    id: 1,
+                    nombre: 'ron',
+                    precio: 12.000,
+                    imagen: 'assets/img/cardimg.jpg'
+                },
+                {
+                    id: 2,
+                    nombre: 'ron',
+                    precio: 12.000,
+                    imagen: 'assets/img/cardimg.jpg'
+                },
+                {
+                    id: 3,
+                    nombre: 'ron',
+                    precio: 12.000,
+                    imagen: 'assets/img/cardimg.jpg'
+                },
+                {
+                    id: 4,
+                    nombre: 'ron',
+                    precio: 12.000,
+                    imagen: 'assets/img/cardimg.jpg'
+                }
+
+            ];
+
+            let carrito = [];
+            const divisa = '€';
+            const DOMitems = document.querySelector('#items');
+            const DOMcarrito = document.querySelector('#carrito');
+            const DOMtotal = document.querySelector('#total');
+            const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+            const miLocalStorage = window.localStorage;
+
+            // Funciones
+
+            /**
+            * Dibuja todos los productos a partir de la base de datos. No confundir con el carrito
+            */
+            function renderizarProductos() {
+                baseDeDatos.forEach((info) => {
+                    // Estructura
+                    const miNodo = document.createElement('div');
+                    miNodo.classList.add('card', 'col-sm-4');
+                    // Body
+                    const miNodoCardBody = document.createElement('div');
+                    miNodoCardBody.classList.add('card-body');
+                    // Titulo
+                    const miNodoTitle = document.createElement('h5');
+                    miNodoTitle.classList.add('card-title');
+                    miNodoTitle.textContent = info.nombre;
+                    // Imagen
+                    const miNodoImagen = document.createElement('img');
+                    miNodoImagen.classList.add('img-fluid');
+                    miNodoImagen.setAttribute('src', info.imagen);
+                    // Precio
+                    const miNodoPrecio = document.createElement('p');
+                    miNodoPrecio.classList.add('card-text');
+                    miNodoPrecio.textContent = `${info.precio}${divisa}`;
+                    // Boton 
+                    const miNodoBoton = document.createElement('button');
+                    miNodoBoton.classList.add('btn', 'btn-primary');
+                    miNodoBoton.textContent = '+';
+                    miNodoBoton.setAttribute('marcador', info.id);
+                    miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
+                    // Insertamos
+                    miNodoCardBody.appendChild(miNodoImagen);
+                    miNodoCardBody.appendChild(miNodoTitle);
+                    miNodoCardBody.appendChild(miNodoPrecio);
+                    miNodoCardBody.appendChild(miNodoBoton);
+                    miNodo.appendChild(miNodoCardBody);
+                    DOMitems.appendChild(miNodo);
+                });
+            }
+
+            /**
+            * Evento para añadir un producto al carrito de la compra
+            */
+            function anyadirProductoAlCarrito(evento) {
+                // Anyadimos el Nodo a nuestro carrito
+                carrito.push(evento.target.getAttribute('marcador'))
+                // Actualizamos el carrito 
+                renderizarCarrito();
+                // Actualizamos el LocalStorage
+                guardarCarritoEnLocalStorage();
+            }
+
+            /**
+            * Dibuja todos los productos guardados en el carrito
+            */
+            function renderizarCarrito() {
+                // Vaciamos todo el html
+                DOMcarrito.textContent = '';
+                // Quitamos los duplicados
+                const carritoSinDuplicados = [...new Set(carrito)];
+                // Generamos los Nodos a partir de carrito
+                carritoSinDuplicados.forEach((item) => {
+                    // Obtenemos el item que necesitamos de la variable base de datos
+                    const miItem = baseDeDatos.filter((itemBaseDatos) => {
+                        // ¿Coincide las id? Solo puede existir un caso
+                        return itemBaseDatos.id === parseInt(item);
+                    });
+                    // Cuenta el número de veces que se repite el producto
+                    const numeroUnidadesItem = carrito.reduce((total, itemId) => {
+                        // ¿Coincide las id? Incremento el contador, en caso contrario no mantengo
+                        return itemId === item ? total += 1 : total;
+                    }, 0);
+                    // Creamos el nodo del item del carrito
+                    const miNodo = document.createElement('li');
+                    miNodo.classList.add('list-group-item', 'text-right', 'mx-2');
+                    miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${miItem[0].precio}${divisa}`;
+                    // Boton de borrar
+                    const miBoton = document.createElement('button');
+                    miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+                    miBoton.textContent = 'X';
+                    miBoton.style.marginLeft = '1rem';
+                    miBoton.dataset.item = item;
+                    miBoton.addEventListener('click', borrarItemCarrito);
+                    // Mezclamos nodos
+                    miNodo.appendChild(miBoton);
+                    DOMcarrito.appendChild(miNodo);
+                });
+                // Renderizamos el precio total en el HTML
+                DOMtotal.textContent = calcularTotal();
+            }
+
+            /**
+            * Evento para borrar un elemento del carrito
+            */
+            function borrarItemCarrito(evento) {
+                // Obtenemos el producto ID que hay en el boton pulsado
+                const id = evento.target.dataset.item;
+                // Borramos todos los productos
+                carrito = carrito.filter((carritoId) => {
+                    return carritoId !== id;
+                });
+                // volvemos a renderizar
+                renderizarCarrito();
+                // Actualizamos el LocalStorage
+                guardarCarritoEnLocalStorage();
+
+            }
+
+            /**
+             * Calcula el precio total teniendo en cuenta los productos repetidos
+             */
+            function calcularTotal() {
+                // Recorremos el array del carrito 
+                return carrito.reduce((total, item) => {
+                    // De cada elemento obtenemos su precio
+                    const miItem = baseDeDatos.filter((itemBaseDatos) => {
+                        return itemBaseDatos.id === parseInt(item);
+                    });
+                    // Los sumamos al total
+                    return total + miItem[0].precio;
+                }, 0).toFixed(2);
+            }
+
+            /**
+            * Varia el carrito y vuelve a dibujarlo
+            */
+            function vaciarCarrito() {
+                // Limpiamos los productos guardados
+                carrito = [];
+                // Renderizamos los cambios
+                renderizarCarrito();
+                // Borra LocalStorage
+                localStorage.clear();
+
+            }
+
+            function guardarCarritoEnLocalStorage () {
+                miLocalStorage.setItem('carrito', JSON.stringify(carrito));
+            }
+
+            function cargarCarritoDeLocalStorage () {
+                // ¿Existe un carrito previo guardado en LocalStorage?
+                if (miLocalStorage.getItem('carrito') !== null) {
+                    // Carga la información
+                    carrito = JSON.parse(miLocalStorage.getItem('carrito'));
+                }
+            }
+
+            // Eventos
+            DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+            // Inicio
+            cargarCarritoDeLocalStorage();
+            renderizarProductos();
+            renderizarCarrito();
+        });
+    </script>
+    <link rel="icon" href="assets/img/icon.jfif" type="image/x-icon">
+    <title>AÑEJADOS</title>
+</head>
+
+<body>
+    <nav>
+        <div>
+
+
+
+        </div>
+        <span></span>
+        <ul>
+            <li><a href="index2.html">Inicio</a></li>
+            
+            <li><a href="registro.html">Perfil</a></li>
+            </li>
+            <li><a href="#contenedornosotros">Historial </a>
+        </ul>
+        <div class="forms">
+            <a href="login.html" class="perfil">login</a>
+            <a href="registro.html" class="perfil">sign up</a>
+        </div>
+        
+
+
+    </nav>
+    <!--CARRUSEL-->
+
+    <div class="slide">
+        <div class="slide-inner">
+            <input class="slide-open" type="radio" id="slide-1" name="slide" aria-hidden="true" hidden=""
+                checked="checked">
+            <div class="slide-item">
+                <img src="assets/img/img1.jfif">
+                <p>Disfruta de un buen licor!</p>
+            </div>
+            <input class="slide-open" type="radio" id="slide-2" name="slide" aria-hidden="true" hidden="">
+            <div class="slide-item">
+                <img src="assets/img/img2.jfif">
+                <p class="carrusel22">A precios muy accesibles</p>
+            </div>
+            <input class="slide-open" type="radio" id="slide-3" name="slide" aria-hidden="true" hidden="">
+            <div class="slide-item">
+                <img src="assets/img/img2.jpg">
+                <p class="carrusel3">En esta página conocerás nuestro catalogo de licores!</p>
+                <a href="#contenedornosotros" class="button">Saber mas</a>
+            </div>
+            <label for="slide-3" class="slide-control prev control-1">‹</label>
+            <label for="slide-2" class="slide-control next control-1">›</label>
+            <label for="slide-1" class="slide-control prev control-2">‹</label>
+            <label for="slide-3" class="slide-control next control-2">›</label>
+            <label for="slide-2" class="slide-control prev control-3">‹</label>
+            <label for="slide-1" class="slide-control next control-3">›</label>
+            <ol class="slide-indicador">
+                <li>
+                    <label for="slide-1" class="slide-circulo">•</label>
+                </li>
+                <li>
+                    <label for="slide-2" class="slide-circulo">•</label>
+                </li>
+                <li>
+                    <label for="slide-3" class="slide-circulo">•</label>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!--FIN CARRUSEL-->
+    <!--Seccion comprar-->
+    <!--Fin seccion comprar-->
+    <!--CARDS-->
+    <h1 class="centrar">carrito</h1>
+    <!-- Carrito de Compras -->
+<div class="container">
+        <div class="row">
+            <!-- Elementos generados a partir del JSON -->
+            <main id="items" class="col-sm-8 row"></main>
+            <!-- Carrito -->
+            <aside class="col-sm-4">
+                <h2>Carrito</h2>
+                <!-- Elementos del carrito -->
+                <ul id="carrito" class="list-group"></ul>
+                <hr>
+                <!-- Precio total -->
+                <p class="text-right">Total: <span id="total"></span>&euro;</p>
+                <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
+            </aside>
+        </div>
+    </div>
+    <!-- fin carrito -->
+    <h1 class="centrar">productos</h1>
+    <div class="container">
+        <div class="card">
+            <figure>
+                <img src="assets/img/cardimg.jpg" alt="">
+            </figure>
+            <div class="contenido">
+                <h3>Ron</h3>
+                <p>fuerte para las noches</p><br>
+                <p><b>PRECIO: </b>12.000</p>
+                <p><b>.................</b></p>
+                <p><b>Marca: </b>ron medellin</p>
+                <a href="registro.html">comprar!</a>
+            </div>
+        </div>
+        <div class="card">
+            <figure>
+                <img src="assets/img/cardimg.jpg" alt="">
+            </figure>
+            <div class="contenido">
+                <h3>Ron</h3>
+                <p>fuerte para las noches</p><br>
+                <p><b>PRECIO: </b>12.000</p>
+                <p><b>.................</b></p>
+                <p><b>Marca: </b>ron medellin</p>
+                <a href="registro.html">comprar!</a>
+            </div>
+        </div>
+        <div class="card">
+            <figure>
+                <img src="assets/img/cardimg.jpg" alt="">
+            </figure>
+            <div class="contenido">
+                <h3>Ron</h3>
+                <p>fuerte para las noches</p><br>
+                <p><b>PRECIO: </b>12.000</p>
+                <p><b>.................</b></p>
+                <p><b>Marca: </b>ron medellin</p>
+                <a href="registro.html">comprar!</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="card">
+            <figure>
+                <img src="assets/img/cardimg.jpg" alt="">
+            </figure>
+            <div class="contenido">
+                <h3>Ron</h3>
+                <p>fuerte para las noches</p><br>
+                <p><b>PRECIO: </b>12.000</p>
+                <p><b>.................</b></p>
+                <p><b>Marca: </b>ron medellin</p>
+                <a href="registro.html">comprar!</a>
+            </div>
+        </div>
+        <div class="card">
+            <figure>
+                <img src="assets/img/cardimg.jpg" alt="">
+            </figure>
+            <div class="contenido">
+                <h3>Ron</h3>
+                <p>fuerte para las noches</p><br>
+                <p><b>PRECIO: </b>12.000</p>
+                <p><b>.................</b></p>
+                <p><b>Marca: </b>ron medellin</p>
+                <a href="registro.html">comprar!</a>
+            </div>
+        </div>
+        <div class="card">
+            <figure>
+                <img src="assets/img/cardimg.jpg" alt="">
+            </figure>
+            <div class="contenido">
+                <h3>Ron</h3>
+                <p>fuerte para las noches</p><br>
+                <p><b>PRECIO: </b>12.000</p>
+                <p><b>.................</b></p>
+                <p><b>Marca: </b>ron medellin</p>
+                <a href="registro.html">comprar!</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!--END CARDS-->
+
+    <!--Pie de pagina-->
+    <footer class="pie-pagina" id="Pie-pagina">
+        <div class="grupo-1">
+            <div class="box">
+                <figure>
+                    <a href="#">
+                        <img src="assets/imagenes/piepagina.png" alt="AÑEJADOS">
+                    </a>
+                </figure>
+            </div>
+            <div class="box">
+                <h2>INFORMACIÓN</h2>
+                <p>Jhojan Sanchez Arango.</p>
+                <p><b>Cell: </b>3002939782</p>
+                <p><b>Correo: </b><a href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSHvnzMvLFDZJmmrpJGksQfmQRgkWkvXhDVbHNNWKLgNqGlRbzXgsGBwVwWcQkRKfMRCXDPB">sanchezjhojan123@gmail.com</a></p>
+            </div>
+        </div>
+        <div class="grupo-2">
+            <small>&copy; 2023 <b>Añejados</b> - Todos los derechos reservados</small>
+        </div>
+    </footer>
+
+    <!--FIN pie de pagina-->
+
+
+
+</body>
+
+</html>

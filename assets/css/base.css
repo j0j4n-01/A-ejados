@@ -1,0 +1,580 @@
+*{
+    margin: 0;
+    font-family: candara;
+    box-sizing: border-box;
+}
+
+nav {
+    background-color: #5c227a;
+    display:flex;
+    justify-content:space-around;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+
+
+
+}
+ul{
+    display: flex;
+    list-style: none;
+
+
+}
+nav li a{
+    background-color: #5c227a;
+    color: black;
+    text-decoration: none;
+    padding: 15px 15px 15px 15px;
+    display: block;
+    color: black;
+    font-size: 18px;
+    font-family: candara;
+    
+}
+
+nav > li {
+    float: left;
+}
+
+nav li ul {
+    display: none;
+    position: absolute;
+    min-width: 140px;
+}
+
+nav li:hover > ul{
+    display: block;
+}
+
+nav ul a:hover{
+    background-color: #bb46fa;
+    color: #d691fb;
+}
+.forms a:hover{
+    background-color: #bb46fa;
+    color: #d691fb;
+}
+.box p a{
+    text-decoration: none;
+    color: black;
+}
+#menuh{
+    width: 60px;
+    height: 60px;
+    padding-top: 5px;
+}
+@media screen and (max-width: 800px){
+    #menuh{
+        display: initial;
+        width: 5%;
+    }
+    nav ul{
+        display: none;
+    }
+    .pie-pagina .grupo-1{
+        width: 90%;
+        
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 30px;
+        padding: 35px 0px;
+    }
+}
+
+.perfil {
+    display: inline;
+    align-items: center;
+    text-decoration: none;
+    padding: 15px 25px 15px 25px;
+    background-color: #5c227a;
+    color: black;
+    
+    
+}
+
+
+.despegable li a{
+    display: block;
+}
+
+.pie-pagina{
+    width: 100%;
+    background-color: #d691fb;
+}
+
+.pie-pagina .grupo-1{
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 50px;
+    padding: 45px 0px;
+}
+
+.pie-pagina .grupo-1 .box figure{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pie-pagina .grupo-1 .box figure img{
+    width: 100px;
+}
+
+.pie-pagina .grupo-1 .box figure .logo{
+    font-size: 60px;
+}
+
+.pie-pagina .grupo-1 .box h2{
+    margin-bottom: 25px;
+    font-size: 20px;
+    
+}
+
+.pie-pagina .grupo-1 .red-social a{
+    display: inline-block;
+    text-decoration: none;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: black;
+    margin-right: 10px;
+    background-color: #d691fb;
+    text-align: center;
+    transition: all 300ms ease;
+}
+
+.pie-pagina .grupo-1 .red-social a:hover{
+    color: #5c227a;
+}
+
+.pie-pagina .grupo-2{
+    background-color: #5c227a;
+    padding: 15px 10px;
+    text-align: center;
+    color: black;
+}
+
+.pie-pagina .grupo-2 small{
+    font-size: 15px;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    max-width: 1100px;
+    margin: 80px;
+    margin-left: 100px;
+}
+
+.card{
+    width: 100%;
+    margin: 20px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+    cursor: default;
+    transition: all 400ms ease;
+}
+
+.card:hover{
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3%);
+}
+
+.card img{
+    width: 100%;
+    height: 210px;
+}
+
+.card .contenido{
+    padding: 15px;
+    text-align: center;
+}
+
+.card .contenido p{
+    line-height: 1.5;
+    color: #6a6a6a;
+}
+
+.card .contenido h3{
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+.card .contenido a{
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 10px;
+    color: #ac01fb;
+    border: 1px solid #ac01fb;
+    border-radius: 4px;
+    transition: all 400ms ease;
+}
+
+.card .contenido a:hover{
+    background-color: #ac01fb;
+    color: white;
+}
+
+.slide {
+    position: relative;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.64);
+    margin-top: 0px;
+}
+.slide-inner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 500px;
+}
+.slide-open:checked + .slide-item {
+    position: static;
+    opacity: 100;
+}
+.slide-item {
+    position: absolute;
+    opacity: 0;
+    -webkit-transition: opacity 0.6s ease-out;
+    transition: opacity 0.6s ease-out;
+}
+.slide-item img {
+    display: block;
+    height: auto;
+    width: 100%;
+    opacity: 0.6;
+}
+.slide-control {
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    font-size: 40px;
+    height: 40px;
+    line-height: 35px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(0, -50%);
+    cursor: pointer;
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    text-align: center;
+    width: 40px;
+    z-index: 10;
+}
+.slide-control.prev {
+    left: 2%;
+}
+.slide-control.next {
+    right: 2%;
+}
+.slide-control:hover {
+    background: rgba(0, 0, 0, 0.8);
+    color: #aaaaaa;
+}
+#slide-1:checked ~ .control-1,
+#slide-2:checked ~ .control-2,
+#slide-3:checked ~ .control-3 {
+    display: block;
+}
+.slide-indicador {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 2%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+}
+.slide-indicador li {
+    display: inline-block;
+    margin: 0 5px;
+}
+.slide-circulo {
+    color: #828282;
+    cursor: pointer;
+    display: block;
+    font-size: 35px;
+}
+.slide-circulo:hover {
+    color: #aaaaaa;
+}
+#slide-1:checked ~ .control-1 ~ .slide-indicador 
+     li:nth-child(1) .slide-circulo,
+#slide-2:checked ~ .control-2 ~ .slide-indicador 
+      li:nth-child(2) .slide-circulo,
+#slide-3:checked ~ .control-3 ~ .slide-indicador 
+      li:nth-child(3) .slide-circulo {
+    color: #d691fb;
+}
+#titulo {
+    width: 100%;
+    position: absolute;
+    padding: 0px;
+    margin: 0px auto;
+    text-align: center;
+    font-size: 27px;
+    color: rgba(255, 255, 255, 1);
+    font-family: 'Open Sans', sans-serif;
+    z-index: 9999;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.33), 
+         -1px 0px 2px rgba(255, 255, 255, 0);
+}
+
+.slide-item p{
+    font-size: 3rem;
+    color: #5c227a;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.slide-item .carrusel22{
+    color: #5c227a;
+    font-size: 3rem;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+.slide-item .carrusel3{
+    font-size: 3rem;
+    color: #5c227a;
+    position: absolute;
+    top: 40%;
+    left:55%;
+    transform: translate(-50%, -50%);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.slide-item a {
+    color: white;
+    background-color: #5c227a;
+    position: absolute;
+    top: 60%;
+    left: 45%;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.slide-item a:hover{
+    background-color: #bb46fa;
+}
+
+.adoptar{
+    width: 100%;
+    height: 580px;
+}
+.columnas{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 70px;
+}
+
+.adoptar h1{
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 40px;
+    color: black;
+}
+
+.adoptar p{
+    margin-left: 60px;
+    margin-right: 60px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-size: 15px;
+}
+
+.columnas img{
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    margin: 30px;
+    overflow: hidden;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+    transition: all 400ms ease;
+}
+
+.columna1 img:hover{
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3%);
+}
+
+.columna2 img:hover{
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3%);
+}
+
+.boton a{
+    text-decoration: none;
+    text-align: center;
+    background-color: #5c227a;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.boton{
+    margin-left: 42%;
+}
+
+.boton a:hover{
+    background-color: #bb46fa;
+    color: white;
+}
+
+#contenedornosotros{
+    width: 100%;
+    height: 530px;
+    justify-content: center;
+    background-color: #5c227a;
+    margin-bottom: 40px;
+}
+#contenedornosotros h1{
+    margin-top: 20px;
+    padding-top: 30px;
+    color: white;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 50px;
+}
+.centrar{
+    text-align: center;
+}
+
+.columnasnoso{
+    display: flex;
+    justify-content: center;
+    margin: 40px 60px 50px 60px ;
+}
+
+.mision{
+    background-color: #d691fb;
+    padding: 50px;
+}
+
+.vision{
+    background-color: white;
+    padding: 50px;
+}
+
+.columnasnoso h2{
+    text-align: center;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    margin-bottom: 30px;
+    font-size: 30px;
+    margin-top: 50px;
+}
+
+.centrar{
+    margin-top: 60px;
+}
+
+.card img{
+    width: 100%;
+    height: 210px;
+}
+
+.card .contenido{
+    padding: 15px;
+    text-align: center;
+}
+
+.card .contenido p{
+    line-height: 1.5;
+    color: #6a6a6a;
+}
+
+.card .contenido h3{
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+.card .contenido a{
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 10px;
+    color: #bb46fa;
+    border: 1px solid #bb46fa;
+    border-radius: 4px;
+    transition: all 400ms ease;
+}
+
+.card .contenido a:hover{
+    background-color: #bb46fa;
+    color:white;
+}
+
+.gato-adopcion{
+    width: 100%;
+    background-color: #5c227a;
+    margin: 0px;
+    height: 530px;
+}
+
+.perro-gato{
+    align-items: center;
+    margin-left: 400px;
+    padding: 20px;
+}
+
+.gato-adopcion h2{
+    text-align: center;
+    padding-top: 30px;
+    color: white;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.perro-gato img{
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    margin: 30px;
+    overflow: hidden;
+    box-shadow: 0px 1px 10px rgb(245, 242, 242);
+    transition: all 400ms ease;
+}
+
+.perro-gato img:hover{
+    box-shadow: 5px 5px 20px rgb(255, 255, 255);
+    transform: translateY(-3%);
+}
+.boton a{
+    text-decoration: none;
+    text-align: center;
+    background-color: #bb46fa;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.boton{
+    margin-left: 23%;
+}
+
+.boton a:hover{
+    background-color: #d691fb;
+    color: white;
+}
